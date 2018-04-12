@@ -1,6 +1,16 @@
-# y
+# V-LordChess
 
 > A chess game with VueJs!
+
+## Backlog
+
+> Apply state management and use it for track game turns
+> Apply movement exceptions such as Rook and Large Rook
+> Apply rules for pieces (which are the possible squares that the pieces can move and block in case of not possible)
+> Place grid at boardside ([1,2,3] & [a,b,c])
+> Develop interface (think about responsability and touch support? idk, maybe)
+> Create your own board piece placement (for training purposes)
+> Implement more skins (or even make it more visually apealling)
 
 ## Build Setup
 

@@ -3,12 +3,9 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
-import Vuex from 'vuex'
 import VueDragDrop from 'vue-drag-drop'
 
 Vue.use(VueDragDrop)
-
-Vue.use(Vuex)
 
 Vue.config.productionTip = false
 
