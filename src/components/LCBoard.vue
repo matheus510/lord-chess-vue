@@ -4,11 +4,15 @@
       <div>
         <div class="board">
           <div class="row" v-for="row in 8" v-bind:key="row">
-            <drag :id="square.id" v-if="square.piece" class="square" v-for="square in boardRow(row)" v-bind:key="square.id" @dragstart="startMove(square, ...arguments)">
-              <img :src="`../../static/${square.piece.player}/${square.piece.class}/${square.piece.player}.png`"/>
-            </drag>
-            <drop :id="square.id" v-if="!square.piece" class="square" v-for="square in boardRow(row)" v-bind:key="square.id" @drop="endMove(square, ...arguments)">
-            </drop>
+            <div class="square" v-for="square in boardRow(row)" v-bind:key="square.id">
+              <drag :transfer-data="square" :id="square.id" v-if="square.piece"  @dragstart="startMove(square, ...arguments)">
+                <drop @drop="endMove(square, ...arguments)">
+                  <img :src="`../../static/${square.piece.player}/${square.piece.class}/${square.piece.player}.png`"/>
+                </drop>
+              </drag>
+              <drop class="empty" :id="square.id" v-if="!square.piece" @drop="endMove(square, ...arguments)">
+              </drop>
+            </div>
           </div>
       </div>
       </div>
@@ -23,311 +27,311 @@ export default {
     return {
       boardMap: [
         {
-          id: 11,
+          id: 1,
           y: '1',
           x: 'a',
           piece: {
             player: 1,
             class: 'rook'
+          }
+        },
+        {
+          id: 2,
+          y: '1',
+          x: 'b',
+          piece: {
+            player: 1,
+            class: 'bishop'
+          }
+        },
+        {
+          id: 3,
+          y: '1',
+          x: 'c',
+          piece: {
+            player: 1,
+            class: 'knight'
+          }
+        },
+        {
+          id: 4,
+          y: '1',
+          x: 'd',
+          piece: {
+            player: 1,
+            class: 'queen'
+          }
+        },
+        {
+          id: 5,
+          y: '1',
+          x: 'e',
+          piece: {
+            player: 1,
+            class: 'king'
+          }
+        },
+        {
+          id: 6,
+          y: '1',
+          x: 'f',
+          piece: {
+            player: 1,
+            class: 'knight'
+          }
+        },
+        {
+          id: 7,
+          y: '1',
+          x: 'g',
+          piece: {
+            player: 1,
+            class: 'bishop'
+          }
+        },
+        {
+          id: 8,
+          y: '1',
+          x: 'h',
+          piece: {
+            player: 1,
+            class: 'rook'
+          }
+        },
+        {
+          id: 9,
+          y: '2',
+          x: 'a',
+          piece: {
+            player: 1,
+            class: 'pawn'
+          }
+        },
+        {
+          id: 10,
+          y: '2',
+          x: 'b',
+          piece: {
+            player: 1,
+            class: 'pawn'
+          }
+        },
+        {
+          id: 11,
+          y: '2',
+          x: 'c',
+          piece: {
+            player: 1,
+            class: 'pawn'
           }
         },
         {
           id: 12,
-          y: '1',
-          x: 'b',
+          y: '2',
+          x: 'd',
           piece: {
             player: 1,
-            class: 'bishop'
+            class: 'pawn'
           }
         },
         {
           id: 13,
-          y: '1',
-          x: 'c',
+          y: '2',
+          x: 'e',
           piece: {
             player: 1,
-            class: 'knight'
+            class: 'pawn'
           }
         },
         {
           id: 14,
-          y: '1',
-          x: 'd',
+          y: '2',
+          x: 'f',
           piece: {
             player: 1,
-            class: 'queen'
+            class: 'pawn'
           }
         },
         {
           id: 15,
-          y: '1',
-          x: 'e',
+          y: '2',
+          x: 'g',
           piece: {
             player: 1,
-            class: 'king'
+            class: 'pawn'
           }
         },
         {
           id: 16,
-          y: '1',
-          x: 'f',
+          y: '2',
+          x: 'h',
           piece: {
             player: 1,
-            class: 'knight'
+            class: 'pawn'
           }
         },
         {
           id: 17,
-          y: '1',
-          x: 'g',
-          piece: {
-            player: 1,
-            class: 'bishop'
-          }
-        },
-        {
-          id: 18,
-          y: '1',
-          x: 'h',
-          piece: {
-            player: 1,
-            class: 'rook'
-          }
-        },
-        {
-          id: 21,
-          y: '2',
-          x: 'a',
-          piece: {
-            player: 1,
-            class: 'pawn'
-          }
-        },
-        {
-          id: 22,
-          y: '2',
-          x: 'b',
-          piece: {
-            player: 1,
-            class: 'pawn'
-          }
-        },
-        {
-          id: 23,
-          y: '2',
-          x: 'c',
-          piece: {
-            player: 1,
-            class: 'pawn'
-          }
-        },
-        {
-          id: 24,
-          y: '2',
-          x: 'd',
-          piece: {
-            player: 1,
-            class: 'pawn'
-          }
-        },
-        {
-          id: 25,
-          y: '2',
-          x: 'e',
-          piece: {
-            player: 1,
-            class: 'pawn'
-          }
-        },
-        {
-          id: 26,
-          y: '2',
-          x: 'f',
-          piece: {
-            player: 1,
-            class: 'pawn'
-          }
-        },
-        {
-          id: 27,
-          y: '2',
-          x: 'g',
-          piece: {
-            player: 1,
-            class: 'pawn'
-          }
-        },
-        {
-          id: 28,
-          y: '2',
-          x: 'h',
-          piece: {
-            player: 1,
-            class: 'pawn'
-          }
-        },
-        {
-          id: 31,
           y: '3',
           x: 'a'
         },
         {
-          id: 32,
+          id: 18,
           y: '3',
           x: 'b'
         },
         {
-          id: 33,
+          id: 19,
           y: '3',
           x: 'c'
         },
         {
-          id: 34,
+          id: 20,
           y: '3',
           x: 'd'
         },
         {
-          id: 35,
+          id: 21,
           y: '3',
           x: 'e'
         },
         {
-          id: 36,
+          id: 22,
           y: '3',
           x: 'f'
         },
         {
-          id: 37,
+          id: 23,
           y: '3',
           x: 'g'
         },
         {
-          id: 38,
+          id: 24,
           y: '3',
+          x: 'h'
+        },
+        {
+          id: 25,
+          y: '4',
+          x: 'a'
+        },
+        {
+          id: 26,
+          y: '4',
+          x: 'b'
+        },
+        {
+          id: 27,
+          y: '4',
+          x: 'c'
+        },
+        {
+          id: 28,
+          y: '4',
+          x: 'd'
+        },
+        {
+          id: 29,
+          y: '4',
+          x: 'e'
+        },
+        {
+          id: 30,
+          y: '4',
+          x: 'f'
+        },
+        {
+          id: 31,
+          y: '4',
+          x: 'g'
+        },
+        {
+          id: 32,
+          y: '4',
+          x: 'h'
+        },
+        {
+          id: 33,
+          y: '5',
+          x: 'a'
+        },
+        {
+          id: 34,
+          y: '5',
+          x: 'b'
+        },
+        {
+          id: 35,
+          y: '5',
+          x: 'c'
+        },
+        {
+          id: 36,
+          y: '5',
+          x: 'd'
+        },
+        {
+          id: 37,
+          y: '5',
+          x: 'e'
+        },
+        {
+          id: 38,
+          y: '5',
+          x: 'f'
+        },
+        {
+          id: 39,
+          y: '5',
+          x: 'g'
+        },
+        {
+          id: 40,
+          y: '5',
           x: 'h'
         },
         {
           id: 41,
-          y: '4',
+          y: '6',
           x: 'a'
         },
         {
           id: 42,
-          y: '4',
+          y: '6',
           x: 'b'
         },
         {
           id: 43,
-          y: '4',
+          y: '6',
           x: 'c'
         },
         {
           id: 44,
-          y: '4',
+          y: '6',
           x: 'd'
         },
         {
           id: 45,
-          y: '4',
+          y: '6',
           x: 'e'
         },
         {
           id: 46,
-          y: '4',
+          y: '6',
           x: 'f'
         },
         {
           id: 47,
-          y: '4',
+          y: '6',
           x: 'g'
         },
         {
           id: 48,
-          y: '4',
-          x: 'h'
-        },
-        {
-          id: 51,
-          y: '5',
-          x: 'a'
-        },
-        {
-          id: 52,
-          y: '5',
-          x: 'b'
-        },
-        {
-          id: 53,
-          y: '5',
-          x: 'c'
-        },
-        {
-          id: 54,
-          y: '5',
-          x: 'd'
-        },
-        {
-          id: 55,
-          y: '5',
-          x: 'e'
-        },
-        {
-          id: 56,
-          y: '5',
-          x: 'f'
-        },
-        {
-          id: 57,
-          y: '5',
-          x: 'g'
-        },
-        {
-          id: 58,
-          y: '5',
-          x: 'h'
-        },
-        {
-          id: 61,
-          y: '6',
-          x: 'a'
-        },
-        {
-          id: 62,
-          y: '6',
-          x: 'b'
-        },
-        {
-          id: 63,
-          y: '6',
-          x: 'c'
-        },
-        {
-          id: 64,
-          y: '6',
-          x: 'd'
-        },
-        {
-          id: 65,
-          y: '6',
-          x: 'e'
-        },
-        {
-          id: 66,
-          y: '6',
-          x: 'f'
-        },
-        {
-          id: 67,
-          y: '6',
-          x: 'g'
-        },
-        {
-          id: 68,
           y: '6',
           x: 'h'
         },
         {
-          id: 71,
+          id: 49,
           y: '7',
           x: 'a',
           piece: {
@@ -336,7 +340,7 @@ export default {
           }
         },
         {
-          id: 72,
+          id: 50,
           y: '7',
           x: 'b',
           piece: {
@@ -345,7 +349,7 @@ export default {
           }
         },
         {
-          id: 73,
+          id: 51,
           y: '7',
           x: 'c',
           piece: {
@@ -354,7 +358,7 @@ export default {
           }
         },
         {
-          id: 74,
+          id: 52,
           y: '7',
           x: 'd',
           piece: {
@@ -363,7 +367,7 @@ export default {
           }
         },
         {
-          id: 75,
+          id: 53,
           y: '7',
           x: 'e',
           piece: {
@@ -372,7 +376,7 @@ export default {
           }
         },
         {
-          id: 76,
+          id: 54,
           y: '7',
           x: 'f',
           piece: {
@@ -381,7 +385,7 @@ export default {
           }
         },
         {
-          id: 77,
+          id: 55,
           y: '7',
           x: 'g',
           piece: {
@@ -390,7 +394,7 @@ export default {
           }
         },
         {
-          id: 78,
+          id: 56,
           y: '7',
           x: 'h',
           piece: {
@@ -399,7 +403,7 @@ export default {
           }
         },
         {
-          id: 81,
+          id: 57,
           y: '8',
           x: 'a',
           piece: {
@@ -408,7 +412,7 @@ export default {
           }
         },
         {
-          id: 82,
+          id: 58,
           y: '8',
           x: 'b',
           piece: {
@@ -417,7 +421,7 @@ export default {
           }
         },
         {
-          id: 83,
+          id: 59,
           y: '8',
           x: 'c',
           piece: {
@@ -426,7 +430,7 @@ export default {
           }
         },
         {
-          id: 84,
+          id: 60,
           y: '8',
           x: 'd',
           piece: {
@@ -435,7 +439,7 @@ export default {
           }
         },
         {
-          id: 85,
+          id: 61,
           y: '8',
           x: 'e',
           piece: {
@@ -444,7 +448,7 @@ export default {
           }
         },
         {
-          id: 86,
+          id: 62,
           y: '8',
           x: 'f',
           piece: {
@@ -453,7 +457,7 @@ export default {
           }
         },
         {
-          id: 87,
+          id: 63,
           y: '8',
           x: 'g',
           piece: {
@@ -462,7 +466,7 @@ export default {
           }
         },
         {
-          id: 88,
+          id: 64,
           y: '8',
           x: 'h',
           piece: {
@@ -476,25 +480,40 @@ export default {
       turnNumber: 1,
       turnInfo: {
         from: '',
-        to: ''
+        to: '',
+        isCapture: false
       }
     }
   },
   methods: {
     startMove (square) {
-      this.turnInfo.from = `${square.x}${square.y}`
+      this.turnInfo.from = square
     },
     endMove (square) {
-      this.turnInfo.to = `${square.x}${square.y}`
-      console.log(`${this.turnInfo.from}-${this.turnInfo.to}`)
+      this.turnInfo.to = square
+      this.nextTurn()
+    },
+    consolidateMove () {
+      let previousSquare = this.turnInfo.from
+      let intendedSquare = this.turnInfo.to
+
+      this.boardMap = this.boardMap.map(square => {
+        if (square.id === intendedSquare.id) {
+          square.piece = previousSquare.piece
+          previousSquare.piece = undefined
+        }
+        return square
+      })
+      this.$forceUpdate()
     },
     nextTurn () {
+      this.consolidateMove()
       this.turnPlayer === 1 ? this.turnPlayer = 2 : this.turnPlayer = 1
       this.turnNumber++
     },
     boardRow (row) {
       return this.boardMap.filter((square) => {
-        let squareRow = square.id.toString().split('').map(Number)[0]
+        let squareRow = parseInt(square.y)
         if (squareRow === (row)) {
           return square
         }
@@ -511,11 +530,16 @@ export default {
 }
 .board .row .square {
   display: inline-block;
-  height: 54px;
+  height: 100%;
+  min-height: 50px;
   width: 12.5%;
 }
 .board .row .square img {
   width: 50px;
+}
+.empty {
+  width: 50px !important;
+  height: 50px !important;
 }
 .board .row:nth-child(odd) .square:nth-child(even) {
   background: #3ba0d9;
