@@ -1,5 +1,6 @@
 const gameLog = {
   state: {
+    currentBoardMap: [],
     movementLog: [],
     playersLog: {
       1: [],
@@ -7,22 +8,24 @@ const gameLog = {
     }
   },
   mutations: {
-    newMovement (state, payload) {
-      state.gameLog.movementLog.push(payload.movementString)
+    turnFinished (state, payload) {
+      state.movementLog.push(payload.turnInfo.movement)
+      state.currentBoardMap = payload.currentBoardMap
     }
   },
   actions: {
-    newMovement ({ commit }) {
-      commit('newMovement')
+    turnFinished ({ commit }, payload) {
+      commit('turnFinished', payload)
     }
   },
   getters: {
     getGameLog (state) {
       return state.movementLog
+    },
+    getCurrentBoard (state) {
+      return state.currentBoardMap
     }
   }
 }
 
-export default {
-  gameLog
-}
+export default gameLog

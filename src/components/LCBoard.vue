@@ -21,6 +21,8 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from 'vuex'
+
 export default {
   name: 'LCBoard',
   data () {
@@ -481,11 +483,21 @@ export default {
       turnInfo: {
         from: '',
         to: '',
-        isCapture: false
+        isCapture: false,
+        isCheck: false
       }
     }
   },
+  computed: {
+    ...mapGetters([
+      'getGameLog',
+      'getCurrentBoard'
+    ])
+  },
   methods: {
+    ...mapActions([
+      'turnFinished'
+    ]),
     startMove (square) {
       this.turnInfo.from = square
     },
@@ -508,6 +520,16 @@ export default {
     },
     nextTurn () {
       this.consolidateMove()
+      let stateUpdateObj = {
+        currentBoardMap: this.boardMap,
+        turnInfo: {
+          player: this.turnPlayer,
+          movement: `${this.turnInfo.from.x}${this.turnInfo.from.y}-${this.turnInfo.to.x}${this.turnInfo.to.y}`,
+          check: this.turnInfo.isCheck
+        }
+      }
+      console.log(this.$store.state.gameLog)
+      this.turnFinished(stateUpdateObj)
       this.turnPlayer === 1 ? this.turnPlayer = 2 : this.turnPlayer = 1
       this.turnNumber++
     },
