@@ -4,7 +4,7 @@
       <div>
         <div class="board">
           <div class="row" v-for="row in 8" v-bind:key="row">
-            <div class="square" v-for="square in boardRow(row)" v-bind:key="square.id">
+            <div class="square" v-for="square in boardRow(row)" v-bind:key="square.id" @click="selectPiece(square)" v-bind:class="{'possible': square.possible === true}">
               <drag :transfer-data="square" :id="square.id" v-if="square.piece"  @dragstart="startMove(square, ...arguments)">
                 <drop @drop="endMove(square, ...arguments)">
                   <img :src="`../../static/${square.piece.player}/${square.piece.class}/${square.piece.player}.png`"/>
@@ -22,6 +22,7 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
+import movementCheck from './pieceRuleHandler'
 
 export default {
   name: 'LCBoard',
@@ -30,8 +31,9 @@ export default {
       boardMap: [
         {
           id: 1,
-          y: '1',
-          x: 'a',
+          y: 1,
+          x: 1,
+          positionString: '1a',
           piece: {
             player: 1,
             class: 'rook'
@@ -39,8 +41,9 @@ export default {
         },
         {
           id: 2,
-          y: '1',
-          x: 'b',
+          y: 1,
+          x: 2,
+          positionString: '1b',
           piece: {
             player: 1,
             class: 'bishop'
@@ -48,8 +51,9 @@ export default {
         },
         {
           id: 3,
-          y: '1',
-          x: 'c',
+          y: 1,
+          x: 3,
+          positionString: '1c',
           piece: {
             player: 1,
             class: 'knight'
@@ -57,8 +61,9 @@ export default {
         },
         {
           id: 4,
-          y: '1',
-          x: 'd',
+          y: 1,
+          x: 4,
+          positionString: '1d',
           piece: {
             player: 1,
             class: 'queen'
@@ -66,8 +71,9 @@ export default {
         },
         {
           id: 5,
-          y: '1',
-          x: 'e',
+          y: 1,
+          x: 5,
+          positionString: '1e',
           piece: {
             player: 1,
             class: 'king'
@@ -75,8 +81,9 @@ export default {
         },
         {
           id: 6,
-          y: '1',
-          x: 'f',
+          y: 1,
+          x: 6,
+          positionString: '1f',
           piece: {
             player: 1,
             class: 'knight'
@@ -84,8 +91,9 @@ export default {
         },
         {
           id: 7,
-          y: '1',
-          x: 'g',
+          y: 1,
+          x: 7,
+          positionString: '1g',
           piece: {
             player: 1,
             class: 'bishop'
@@ -93,8 +101,9 @@ export default {
         },
         {
           id: 8,
-          y: '1',
-          x: 'h',
+          y: 1,
+          x: 8,
+          positionString: '1h',
           piece: {
             player: 1,
             class: 'rook'
@@ -102,8 +111,9 @@ export default {
         },
         {
           id: 9,
-          y: '2',
-          x: 'a',
+          y: 2,
+          x: 1,
+          positionString: '2a',
           piece: {
             player: 1,
             class: 'pawn'
@@ -111,8 +121,9 @@ export default {
         },
         {
           id: 10,
-          y: '2',
-          x: 'b',
+          y: 2,
+          x: 2,
+          positionString: '2b',
           piece: {
             player: 1,
             class: 'pawn'
@@ -120,8 +131,9 @@ export default {
         },
         {
           id: 11,
-          y: '2',
-          x: 'c',
+          y: 2,
+          x: 3,
+          positionString: '2c',
           piece: {
             player: 1,
             class: 'pawn'
@@ -129,8 +141,9 @@ export default {
         },
         {
           id: 12,
-          y: '2',
-          x: 'd',
+          y: 2,
+          x: 4,
+          positionString: '2d',
           piece: {
             player: 1,
             class: 'pawn'
@@ -138,8 +151,9 @@ export default {
         },
         {
           id: 13,
-          y: '2',
-          x: 'e',
+          y: 2,
+          x: 5,
+          positionString: '2e',
           piece: {
             player: 1,
             class: 'pawn'
@@ -147,8 +161,9 @@ export default {
         },
         {
           id: 14,
-          y: '2',
-          x: 'f',
+          y: 2,
+          x: 6,
+          positionString: '2f',
           piece: {
             player: 1,
             class: 'pawn'
@@ -156,8 +171,9 @@ export default {
         },
         {
           id: 15,
-          y: '2',
-          x: 'g',
+          y: 2,
+          x: 7,
+          positionString: '2g',
           piece: {
             player: 1,
             class: 'pawn'
@@ -165,8 +181,9 @@ export default {
         },
         {
           id: 16,
-          y: '2',
-          x: 'h',
+          y: 2,
+          x: 8,
+          positionString: '2h',
           piece: {
             player: 1,
             class: 'pawn'
@@ -174,168 +191,201 @@ export default {
         },
         {
           id: 17,
-          y: '3',
-          x: 'a'
+          y: 3,
+          x: 1,
+          positionString: '3a'
         },
         {
           id: 18,
-          y: '3',
-          x: 'b'
+          y: 3,
+          x: 2,
+          positionString: '3b'
         },
         {
           id: 19,
-          y: '3',
-          x: 'c'
+          y: 3,
+          x: 3,
+          positionString: '3c'
         },
         {
           id: 20,
-          y: '3',
-          x: 'd'
+          y: 3,
+          x: 4,
+          positionString: '3d'
         },
         {
           id: 21,
-          y: '3',
-          x: 'e'
+          y: 3,
+          x: 5,
+          positionString: '3e'
         },
         {
           id: 22,
-          y: '3',
-          x: 'f'
+          y: 3,
+          x: 6,
+          positionString: '3f'
         },
         {
           id: 23,
-          y: '3',
-          x: 'g'
+          y: 3,
+          x: 7,
+          positionString: '3g'
         },
         {
           id: 24,
-          y: '3',
-          x: 'h'
+          y: 3,
+          x: 8,
+          positionString: '3h'
         },
         {
           id: 25,
-          y: '4',
-          x: 'a'
+          y: 4,
+          x: 1,
+          positionString: '4a'
         },
         {
           id: 26,
-          y: '4',
-          x: 'b'
+          y: 4,
+          x: 2,
+          positionString: '4b'
         },
         {
           id: 27,
-          y: '4',
-          x: 'c'
+          y: 4,
+          x: 3,
+          positionString: '4c'
         },
         {
           id: 28,
-          y: '4',
-          x: 'd'
+          y: 4,
+          x: 4,
+          positionString: '4d'
         },
         {
           id: 29,
-          y: '4',
-          x: 'e'
+          y: 4,
+          x: 5,
+          positionString: '4e'
         },
         {
           id: 30,
-          y: '4',
-          x: 'f'
+          y: 4,
+          x: 6,
+          positionString: '4f'
         },
         {
           id: 31,
-          y: '4',
-          x: 'g'
+          y: 4,
+          x: 7,
+          positionString: '4g'
         },
         {
           id: 32,
-          y: '4',
-          x: 'h'
+          y: 4,
+          x: 8,
+          positionString: '4h'
         },
         {
           id: 33,
-          y: '5',
-          x: 'a'
+          y: 5,
+          x: 1,
+          positionString: '5a'
         },
         {
           id: 34,
-          y: '5',
-          x: 'b'
+          y: 5,
+          x: 2,
+          positionString: '5b'
         },
         {
           id: 35,
-          y: '5',
-          x: 'c'
+          y: 5,
+          x: 3,
+          positionString: '5c'
         },
         {
           id: 36,
-          y: '5',
-          x: 'd'
+          y: 5,
+          x: 4,
+          positionString: '5d'
         },
         {
           id: 37,
-          y: '5',
-          x: 'e'
+          y: 5,
+          x: 5,
+          positionString: '5e'
         },
         {
           id: 38,
-          y: '5',
-          x: 'f'
+          y: 5,
+          x: 6,
+          positionString: '5f'
         },
         {
           id: 39,
-          y: '5',
-          x: 'g'
+          y: 5,
+          x: 7,
+          positionString: '5g'
         },
         {
           id: 40,
-          y: '5',
-          x: 'h'
+          y: 5,
+          x: 8,
+          positionString: '5h'
         },
         {
           id: 41,
-          y: '6',
-          x: 'a'
+          y: 6,
+          x: 1,
+          positionString: '6a'
         },
         {
           id: 42,
-          y: '6',
-          x: 'b'
+          y: 6,
+          x: 2,
+          positionString: '6b'
         },
         {
           id: 43,
-          y: '6',
-          x: 'c'
+          y: 6,
+          x: 3,
+          positionString: '6c'
         },
         {
           id: 44,
-          y: '6',
-          x: 'd'
+          y: 6,
+          x: 4,
+          positionString: '6d'
         },
         {
           id: 45,
-          y: '6',
-          x: 'e'
+          y: 6,
+          x: 5,
+          positionString: '6e'
         },
         {
           id: 46,
-          y: '6',
-          x: 'f'
+          y: 6,
+          x: 6,
+          positionString: '6f'
         },
         {
           id: 47,
-          y: '6',
-          x: 'g'
+          y: 6,
+          x: 7,
+          positionString: '6g'
         },
         {
           id: 48,
-          y: '6',
-          x: 'h'
+          y: 6,
+          x: 8,
+          positionString: '6h'
         },
         {
           id: 49,
-          y: '7',
-          x: 'a',
+          y: 7,
+          x: 1,
+          positionString: '7a',
           piece: {
             player: 2,
             class: 'pawn'
@@ -343,8 +393,9 @@ export default {
         },
         {
           id: 50,
-          y: '7',
-          x: 'b',
+          y: 7,
+          x: 2,
+          positionString: '7b',
           piece: {
             player: 2,
             class: 'pawn'
@@ -352,8 +403,9 @@ export default {
         },
         {
           id: 51,
-          y: '7',
-          x: 'c',
+          y: 7,
+          x: 3,
+          positionString: '7c',
           piece: {
             player: 2,
             class: 'pawn'
@@ -361,8 +413,9 @@ export default {
         },
         {
           id: 52,
-          y: '7',
-          x: 'd',
+          y: 7,
+          x: 4,
+          positionString: '7d',
           piece: {
             player: 2,
             class: 'pawn'
@@ -370,8 +423,9 @@ export default {
         },
         {
           id: 53,
-          y: '7',
-          x: 'e',
+          y: 7,
+          x: 5,
+          positionString: '7e',
           piece: {
             player: 2,
             class: 'pawn'
@@ -379,8 +433,9 @@ export default {
         },
         {
           id: 54,
-          y: '7',
-          x: 'f',
+          y: 7,
+          x: 6,
+          positionString: '7f',
           piece: {
             player: 2,
             class: 'pawn'
@@ -388,8 +443,9 @@ export default {
         },
         {
           id: 55,
-          y: '7',
-          x: 'g',
+          y: 7,
+          x: 7,
+          positionString: '7g',
           piece: {
             player: 2,
             class: 'pawn'
@@ -397,8 +453,9 @@ export default {
         },
         {
           id: 56,
-          y: '7',
-          x: 'h',
+          y: 7,
+          x: 8,
+          positionString: '7h',
           piece: {
             player: 2,
             class: 'pawn'
@@ -406,8 +463,9 @@ export default {
         },
         {
           id: 57,
-          y: '8',
-          x: 'a',
+          y: 8,
+          x: 1,
+          positionString: '8a',
           piece: {
             player: 2,
             class: 'rook'
@@ -415,8 +473,9 @@ export default {
         },
         {
           id: 58,
-          y: '8',
-          x: 'b',
+          y: 8,
+          x: 2,
+          positionString: '8b',
           piece: {
             player: 2,
             class: 'bishop'
@@ -424,8 +483,9 @@ export default {
         },
         {
           id: 59,
-          y: '8',
-          x: 'c',
+          y: 8,
+          x: 3,
+          positionString: '8c',
           piece: {
             player: 2,
             class: 'knight'
@@ -433,8 +493,9 @@ export default {
         },
         {
           id: 60,
-          y: '8',
-          x: 'd',
+          y: 8,
+          x: 4,
+          positionString: '8d',
           piece: {
             player: 2,
             class: 'king'
@@ -442,8 +503,9 @@ export default {
         },
         {
           id: 61,
-          y: '8',
-          x: 'e',
+          y: 8,
+          x: 5,
+          positionString: '8e',
           piece: {
             player: 2,
             class: 'queen'
@@ -451,8 +513,9 @@ export default {
         },
         {
           id: 62,
-          y: '8',
-          x: 'f',
+          y: 8,
+          x: 6,
+          positionString: '8f',
           piece: {
             player: 2,
             class: 'knight'
@@ -460,8 +523,9 @@ export default {
         },
         {
           id: 63,
-          y: '8',
-          x: 'g',
+          y: 8,
+          x: 7,
+          positionString: '8g',
           piece: {
             player: 2,
             class: 'bishop'
@@ -469,15 +533,16 @@ export default {
         },
         {
           id: 64,
-          y: '8',
-          x: 'h',
+          y: 8,
+          x: 8,
+          positionString: '8h',
           piece: {
             player: 2,
             class: 'rook'
           }
         }
       ],
-      piecesOut: [],
+      selectedTile: null,
       turnPlayer: 1,
       turnNumber: 1,
       turnInfo: {
@@ -495,6 +560,26 @@ export default {
     ])
   },
   methods: {
+    movementCheck,
+    selectPiece (square) {
+      this.selectedTile = square
+      let movementAbleTiles = []
+      if (this.selectedTile.piece) {
+        let movementInfo = {
+          class: this.selectedTile.piece.class,
+          x: this.selectedTile.x,
+          y: this.selectedTile.y,
+          currentBoardMap: this.boardMap
+        }
+
+        movementAbleTiles = this.movementCheck(movementInfo)
+        this.colorTiles(movementAbleTiles)
+
+        return movementAbleTiles
+      } else {
+        return movementAbleTiles
+      }
+    },
     ...mapActions([
       'turnFinished'
     ]),
@@ -503,9 +588,9 @@ export default {
     },
     endMove (square) {
       this.turnInfo.to = square
-      this.nextTurn()
+      this.endTurn()
     },
-    consolidateMove () {
+    endTurn () {
       let previousSquare = this.turnInfo.from
       let intendedSquare = this.turnInfo.to
 
@@ -516,26 +601,37 @@ export default {
         }
         return square
       })
-      this.$forceUpdate()
-    },
-    nextTurn () {
-      this.consolidateMove()
+
       let stateUpdateObj = {
         currentBoardMap: this.boardMap,
         turnInfo: {
           player: this.turnPlayer,
-          movement: `${this.turnInfo.from.x}${this.turnInfo.from.y}-${this.turnInfo.to.x}${this.turnInfo.to.y}`,
+          movement: `${previousSquare.positionString}-${intendedSquare.positionString}`,
           check: this.turnInfo.isCheck
         }
       }
-      console.log(this.$store.state.gameLog)
-      this.turnFinished(stateUpdateObj)
+
       this.turnPlayer === 1 ? this.turnPlayer = 2 : this.turnPlayer = 1
       this.turnNumber++
+
+      this.turnFinished(stateUpdateObj).then(() => this.$forceUpdate())
+    },
+    colorTiles (possibleMovements) {
+      this.boardMap.map(square => {
+        square.possible = false
+      })
+      possibleMovements.map(possibleSquare => {
+        this.boardMap.map(square => {
+          if (possibleSquare.id === square.id) {
+            square.possible = true
+          }
+        })
+      })
+      this.$forceUpdate()
     },
     boardRow (row) {
       return this.boardMap.filter((square) => {
-        let squareRow = parseInt(square.y)
+        let squareRow = square.y
         if (squareRow === (row)) {
           return square
         }
@@ -562,6 +658,9 @@ export default {
 .empty {
   width: 50px !important;
   height: 50px !important;
+}
+.possible {
+  background-color: rgba(100,100,100,0.9) !important;
 }
 .board .row:nth-child(odd) .square:nth-child(even) {
   background: #3ba0d9;

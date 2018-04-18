@@ -3,8 +3,8 @@ const gameLog = {
     currentBoardMap: [],
     movementLog: [],
     playersLog: {
-      playerOne: [],
-      playerTwo: [],
+      playerOne: '',
+      playerTwo: '',
       gameStart: false
     }
   },

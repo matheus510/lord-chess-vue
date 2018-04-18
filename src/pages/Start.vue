@@ -9,26 +9,33 @@
         Player 2 - Name:
         <input type="text" name="playerTwo" v-model="playerTwo">
       </label>
-      <button @click="gameStart()">Ok!</button>
+      <button @click.stop="start()">Ok!</button>
     </div>
   </div>
 </template>
 
 <script>
+import { mapActions } from 'vuex'
+
 export default {
   data () {
     return {
       playerOne: '',
-      playerTwo: ''
+      playerTwo: '',
+      gameStyle: 'Standard'
     }
   },
   methods: {
-    gameStart () {
+    ...mapActions([
+      'gameStart'
+    ]),
+    start () {
       let stateUpdateObj = {
         playerOne: this.playerOne,
-        playerTwo: this.playerTwo
+        playerTwo: this.playerTwo,
+        gameStyle: this.gameStyle
       }
-      this.$store.dispatch('gameStart', stateUpdateObj)
+      this.gameStart(stateUpdateObj)
       this.$router.push({ path: '/game' })
     }
   }
