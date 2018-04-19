@@ -569,7 +569,8 @@ export default {
           class: this.selectedTile.piece.class,
           x: this.selectedTile.x,
           y: this.selectedTile.y,
-          currentBoardMap: this.boardMap
+          currentBoardMap: this.boardMap,
+          player: this.turnPlayer
         }
 
         movementAbleTiles = this.movementCheck(movementInfo)
