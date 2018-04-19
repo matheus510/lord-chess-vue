@@ -4,11 +4,17 @@
 
 ## Backlog
 
-* Create selected piece. Apply possible tiles where the piece can move (or capture)
-* Apply rules for pieces (which are the possible squares that the pieces can move and block in case of not possible)
+* Apply rules for pieces:
+  ```bash
+  # not to be possible to capture pieces from same player
+  # possible/colored tiles only if no piece is in the way (only for pawn ,rook, queen and bishop)
+  # not move back, if pawn
+  # special movements (an passant, castling)
+  ```
 * Place grid at boardside ([1, 2, ..., 8] & [a, b, ..., h])
 * Develop interface (think about responsability and touch support? idk, maybe)
 * Create your own board piece placement (for training purposes)
+* Develop artificial inteligence to game against
 * Implement more skins (or even make it more visually apealling)
 
 ## Build Setup
