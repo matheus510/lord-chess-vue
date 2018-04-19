@@ -1,6 +1,8 @@
 <template>
   <div>
     <div id="board">
+      AGORA O TURNO É DO {{ this.turnPlayer }}<br />
+      TURNO {{ this.turnNumber }}
       <div>
         <div class="board">
           <div class="row" v-for="row in 8" v-bind:key="row">
@@ -550,7 +552,8 @@ export default {
         to: '',
         isCapture: false,
         isCheck: false
-      }
+      },
+      possibleTiles: []
     }
   },
   computed: {
@@ -563,7 +566,6 @@ export default {
     movementCheck,
     selectPiece (square) {
       this.selectedTile = square
-      let movementAbleTiles = []
       if (this.selectedTile.piece) {
         let movementInfo = {
           class: this.selectedTile.piece.class,
@@ -573,12 +575,8 @@ export default {
           player: this.turnPlayer
         }
 
-        movementAbleTiles = this.movementCheck(movementInfo)
-        this.colorTiles(movementAbleTiles)
-
-        return movementAbleTiles
-      } else {
-        return movementAbleTiles
+        this.possibleTiles = this.movementCheck(movementInfo)
+        this.colorTiles(this.possibleTiles)
       }
     },
     ...mapActions([
@@ -594,14 +592,18 @@ export default {
     endTurn () {
       let previousSquare = this.turnInfo.from
       let intendedSquare = this.turnInfo.to
-
-      this.boardMap = this.boardMap.map(square => {
-        if (square.id === intendedSquare.id) {
-          square.piece = previousSquare.piece
-          previousSquare.piece = undefined
-        }
-        return square
-      })
+      let isValidMovement = this.possibleTiles.includes(intendedSquare)
+      if (isValidMovement) {
+        this.boardMap = this.boardMap.map(square => {
+          if (square.id === intendedSquare.id) {
+            square.piece = previousSquare.piece
+            previousSquare.piece = undefined
+          }
+          return square
+        })
+      } else {
+        alert('movimento invalido')
+      }
 
       let stateUpdateObj = {
         currentBoardMap: this.boardMap,
@@ -617,11 +619,11 @@ export default {
 
       this.turnFinished(stateUpdateObj).then(() => this.$forceUpdate())
     },
-    colorTiles (possibleMovements) {
+    colorTiles (possibleTiles) {
       this.boardMap.map(square => {
         square.possible = false
       })
-      possibleMovements.map(possibleSquare => {
+      possibleTiles.map(possibleSquare => {
         this.boardMap.map(square => {
           if (possibleSquare.id === square.id) {
             square.possible = true

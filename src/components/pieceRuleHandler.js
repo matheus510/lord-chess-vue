@@ -10,13 +10,20 @@ export default function (movementInfo) {
 function pawnMovement (movementInfo) {
   const originX = movementInfo.x
   const originY = movementInfo.y
+  const turnPlayer = movementInfo.player
   let result = movementInfo.currentBoardMap.filter(square => {
-    const deltaX = Math.abs(square.x - originX)
-    const deltaY = Math.abs(square.y - originY)
+    let deltaX = Math.abs(square.x - originX)
+    let deltaY = square.y - originY
     const notHorizontal = deltaX === 0
-    const isFirstMove = ((movementInfo.player === 2 && movementInfo.x === 2) || (movementInfo.player === 1 && movementInfo.x === 7))
-    if ((notHorizontal && isFirstMove && deltaY === 2) || (notHorizontal && deltaY === 1)) {
-      return square
+    const isFirstMove = ((turnPlayer === 1 && originY === 2) || (turnPlayer === 2 && originY === 7))
+    if (turnPlayer === 1) {
+      if ((notHorizontal && isFirstMove && (deltaY === 2 || deltaY === 1)) || (notHorizontal && deltaY === 1)) {
+        return square
+      }
+    } else if (turnPlayer === 2) {
+      if ((notHorizontal && isFirstMove && (deltaY === -2 || deltaY === -1)) || (notHorizontal && deltaY === -1)) {
+        return square
+      }
     }
   })
   return result
