@@ -4,6 +4,9 @@
       AGORA O TURNO É DO {{ this.turnPlayer }}<br />
       TURNO {{ this.turnNumber }}
       <div>
+        {{ this.getGameLog }}
+      </div>
+      <div>
         <div class="board">
           <div class="row" v-for="row in 8" v-bind:key="row">
             <div class="square" v-for="square in boardRow(row)" v-bind:key="square.id" @click="selectPiece(square)" v-bind:class="{'possible': square.possible === true}">
@@ -599,6 +602,8 @@ export default {
             square.piece = previousSquare.piece
             previousSquare.piece = undefined
           }
+          this.selectedTile = undefined
+          this.colorTiles([])
           return square
         })
       } else {
