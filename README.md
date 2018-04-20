@@ -12,7 +12,7 @@
   # special movements (an passant, castling)
   ```
 * Place grid at boardside ([1, 2, ..., 8] & [a, b, ..., h])
-* Develop interface (think about responsability and touch support? idk, maybe)
+* Develop interface (think about responsiveness and touch support? idk, maybe)
 * Create your own board piece placement (for training purposes)
 * Develop artificial inteligence to game against
 * Implement more skins (or even make it more visually apealling)
